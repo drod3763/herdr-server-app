@@ -100,7 +100,9 @@ construction and the two would fight over the socket.
 
 The first time a program in a pane touches the LAN, macOS prompts for **Herdr Server**;
 allow it. It can also be toggled later under System Settings › Privacy & Security › Local
-Network. 1Password's "Always Allow" is offered on the next `op` call.
+Network. 1Password authorizes the launcher once per sign-in and then stays quiet; with an
+ad-hoc signature it names it `herdr-server-launcher` and offers Authorize rather than
+"Always Allow" (a Developer ID would change that).
 
 ## Verify
 
