@@ -50,8 +50,11 @@ It finds herdr at `/opt/homebrew/bin/herdr` or `/usr/local/bin/herdr` (override 
 brew install --cask drod3763/tap/herdr-server
 ```
 
-or download `Herdr-Server-<version>.zip` from Releases and put `Herdr Server.app` in
-`/Applications`.
+or download `Herdr-Server-<version>.zip` from Releases, put `Herdr Server.app` in
+`/Applications`, and strip the quarantine attribute (`xattr -dr com.apple.quarantine
+"/Applications/Herdr Server.app"`). The cask does that for you: Homebrew quarantines its
+downloads, and Gatekeeper refuses to run an unnotarized quarantined binary at all — the
+launcher is SIGKILLed directly and fails with `OS_REASON_EXEC` under launchd.
 
 Then run it from a user LaunchAgent, `~/Library/LaunchAgents/local.herdr-server.plist`:
 
@@ -111,7 +114,8 @@ prints the running server's responsible process. Healthy output ends in
 
 ## Caveats
 
-- **Ad-hoc signature.** Without a Developer ID, the Local Network grant binds to this build's
+- **Ad-hoc signature, not notarized.** Without a Developer ID the bundle must run without
+  the quarantine attribute (see Install), and the Local Network grant binds to this build's
   cdhash. That is why releases are built exactly once in CI and why the bundle must not be
   rebuilt in place on a granted machine; after upgrading the cask, re-grant it. Build with
   `make IDENTITY="Developer ID Application: …"` if you have a certificate, and the grant
